@@ -59,6 +59,31 @@ func (c *Candle) AddTrade(tradeAmount, tradePrice big.Decimal) {
 	c.TradeCount++
 }
 
+// AggregateCandle aggregates an existing candle with a new one, it's useful to sync a candle from multiple
+// shorter time-period candles. For example, a 5-minute candle can be aggreated from 5 1-minute candles.
+func (c *Candle) AggregateCandle(newCandle *Candle) {
+	if newCandle == nil {
+		return
+	}
+	if !(c.Period.Start.Before(newCandle.Period.Start) &&
+		c.Period.End.After(newCandle.Period.Start)) {
+		return
+	}
+	if c.MaxPrice.Zero() {
+		c.MaxPrice = newCandle.MaxPrice
+	} else if newCandle.MaxPrice.GT(c.MaxPrice) {
+		c.MaxPrice = newCandle.MaxPrice
+	}
+	if c.MinPrice.Zero() {
+		c.MinPrice = newCandle.MinPrice
+	} else if newCandle.MinPrice.LT(c.MinPrice) {
+		c.MinPrice = newCandle.MinPrice
+	}
+	c.ClosePrice = newCandle.ClosePrice
+	c.Volume = c.Volume.Add(newCandle.Volume)
+	c.TradeCount += newCandle.TradeCount
+}
+
 func (c *Candle) String() string {
 	return strings.TrimSpace(fmt.Sprintf(
 		`
