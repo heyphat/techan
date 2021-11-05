@@ -32,7 +32,7 @@ func TestCandle_AddTrade(t *testing.T) {
 	assert.EqualValues(t, 5, candle.TradeCount)
 }
 
-func TestCandle_AggregateCandle(t *testing.T) {
+func TestCandle_UpdateCandle(t *testing.T) {
 	now := time.Now()
 	candle := NewCandle(TimePeriod{
 		Start: now,
@@ -50,13 +50,13 @@ func TestCandle_AggregateCandle(t *testing.T) {
 	})
 
 	newCandle.AddTrade(big.NewDecimal(2), big.NewDecimal(10)) // New High, Volume
-	candle.AggregateCandle(newCandle)
+	candle.UpdateCandle(newCandle)
 	assert.EqualValues(t, 2, candle.OpenPrice.Float())
 	assert.EqualValues(t, 10, candle.MaxPrice.Float())
 	assert.EqualValues(t, 7, candle.Volume.Float())
 
 	newCandle.AddTrade(big.NewDecimal(1), big.NewDecimal(0)) // New Low, Close, Volume
-	candle.AggregateCandle(newCandle)
+	candle.UpdateCandle(newCandle)
 	assert.EqualValues(t, 0, candle.MinPrice.Float())
 	assert.EqualValues(t, 0, candle.ClosePrice.Float())
 

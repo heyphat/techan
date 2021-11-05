@@ -59,9 +59,9 @@ func (c *Candle) AddTrade(tradeAmount, tradePrice big.Decimal) {
 	c.TradeCount++
 }
 
-// AggregateCandle aggregates an existing candle with a new one, it's useful to sync a candle from multiple
+// UpdateCandle aggregates an existing candle with a new one, it's useful to sync a candle from multiple
 // shorter time-period candles. For example, a 5-minute candle can be aggreated from 5 1-minute candles.
-func (c *Candle) AggregateCandle(newCandle *Candle) {
+func (c *Candle) UpdateCandle(newCandle *Candle) {
 	if newCandle == nil {
 		return
 	}
