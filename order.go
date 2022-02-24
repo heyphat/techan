@@ -23,3 +23,11 @@ type Order struct {
 	Amount        big.Decimal
 	ExecutionTime time.Time
 }
+
+// String returns a `BUY` or `SELL` string.
+func (os OrderSide) String() string {
+	if os == BUY {
+		return "BUY"
+	}
+	return "SELL"
+}
