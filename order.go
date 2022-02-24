@@ -1,6 +1,7 @@
 package techan
 
 import (
+	"strings"
 	"time"
 
 	"github.com/sdcoffey/big"
@@ -30,4 +31,12 @@ func (os OrderSide) String() string {
 		return "BUY"
 	}
 	return "SELL"
+}
+
+// OrderSideFromString return tachan OrderSide from generic string.
+func OrderSideFromString(s string) OrderSide {
+	if strings.ToUpper(s) == "BUY" {
+		return BUY
+	}
+	return SELL
 }
