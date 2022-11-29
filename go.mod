@@ -1,4 +1,4 @@
-module github.com/itsphat/techan
+module github.com/heyphat/techan
 
 go 1.17
 
